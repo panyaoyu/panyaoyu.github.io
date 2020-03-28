@@ -3,10 +3,11 @@ title_left    : "Pan"
 title_right   : "space" # default: ""
 description   : "Where Pan Yaoyu writes"
 keywords      : "machine learning,algorithm,computer science"
-url           : https://heiswayi.github.io/thinkspace # site url
-baseurl       : "panyaoyu.github.io" # apply repo name like "/myproject" if used under gh-pages branch, else (under master branch) just leave empty/blank
+url           : https://panyaoyu.github.io # site url
+baseurl       : "" # apply repo name like "/myproject" if used under gh-pages branch, else (under master branch) just leave empty/blank
 cover         : "" # image uri like logo/cover image for site seo
 
+email  : "panyaoyu1999@foxmail.com"
 google_analytics  : UA-XXXXX-XX
 twitter_username  : ""
 comments_enabled  : false # if enabled (set to true), please provide your disqus_username
