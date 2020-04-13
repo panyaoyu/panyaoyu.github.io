@@ -1,16 +1,27 @@
-I"��<h3 id="uva220">UVA220</h3>
+I"��<h3 id="uva220">UVA220</h3>
 
 <p>是一道模拟类型的题目。</p>
 
-<p>题目并不算非常难但是非常烦。</p>
+<p>题目并不算非常难但是非常繁琐。</p>
 
-<p>1.蹩马腿(不过这个很容易注意到)
-2.一开始将军的时候将帅不能打照面，如果对面的话算对方赢。
-3.要注意将军的棋子有可能被对方将给吃掉(车在将旁边将军被吃或者炮架子被吃) 。</p>
+<p>思路是从周围的八个方向去判断</p>
 
-<p><a href="https://udebug.com/UVa/1589">1000个测试样例链接https://udebug.com/UVa/1589</a></p>
+<p>这题要非常注意输出的格式，很多次本人提交的时候很多次presentation error。</p>
+
+<p>1.输出黑白棋各自的数目时一定要用格式化输出，每个数字占两个位置。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">printf</span><span class="p">(</span><span class="s">"Black - %2d White - %2d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">cnt_b</span><span class="p">,</span><span class="n">cnt_w</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>一开始以为是-后两个空格就在数字为两位数时发生了presentation error。</p>
+
+<p>2.Q退出时打印棋盘后要输出一个空行分隔，但是最后一个样例不用(这个要注意！！！)。</p>
+
+<p><a href="https://udebug.com/UVa/220">测试样例链接https://udebug.com/UVa/220</a></p>
 
 <p>以下是AC代码</p>
+
+<p>复制很多导致代码质量很低还请谅解，以后有时间重写一下。</p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include&lt;iostream&gt;
 </span>
