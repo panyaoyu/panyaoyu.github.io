@@ -1,0 +1,81 @@
+I"+<h3 id="uva101">UVA101</h3>
+
+<p>一道模拟类型的题目，题目本身并不难，但是给了笔者一些启发。</p>
+
+<p>1.使用vector的resize()方法可以用来弹出尾部的n个元素，不用一个个pop_back()弹出。</p>
+
+<p>2.在开始写代码时不妨先想想如何把过程整理成简单的部分。自己写代码时候时把四种情况各写成一个函数，不仅有很多的重复代码，而且还很容易出错，而紫书上模拟部分的代码只用了两个函数而且十分简洁，很有启发。</p>
+
+<p>以下是本人AC代码</p>
+
+<p><a href="https://udebug.com/UVa/101">一个很长的测试用例 https://udebug.com/UVa/101</a></p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include&lt;iostream&gt;
+</span>
+<span class="cp">#include&lt;vector&gt;
+</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">pile</span><span class="p">[</span><span class="mi">30</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">n</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">o1</span><span class="p">,</span><span class="n">o2</span><span class="p">;</span>
+<span class="n">string</span> <span class="n">s1</span><span class="p">,</span><span class="n">s2</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">posa</span><span class="p">,</span><span class="n">posb</span><span class="p">,</span><span class="n">ha</span><span class="p">,</span><span class="n">hb</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">clear_above</span><span class="p">(</span><span class="kt">int</span> <span class="n">pos</span><span class="p">,</span><span class="kt">int</span> <span class="n">h</span><span class="p">){</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">h</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">pile</span><span class="p">[</span><span class="n">pos</span><span class="p">].</span><span class="n">size</span><span class="p">();</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+		<span class="kt">int</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">pile</span><span class="p">[</span><span class="n">pos</span><span class="p">][</span><span class="n">i</span><span class="p">];</span>
+		<span class="n">pile</span><span class="p">[</span><span class="n">tmp</span><span class="p">].</span><span class="n">push_back</span><span class="p">(</span><span class="n">tmp</span><span class="p">);</span>
+	<span class="p">}</span>
+	<span class="n">pile</span><span class="p">[</span><span class="n">pos</span><span class="p">].</span><span class="n">resize</span><span class="p">(</span><span class="n">h</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span> 
+<span class="kt">void</span> <span class="nf">pile_onto</span><span class="p">(</span><span class="kt">int</span> <span class="n">posa</span><span class="p">,</span><span class="kt">int</span> <span class="n">ha</span><span class="p">,</span><span class="kt">int</span> <span class="n">posb</span><span class="p">){</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">ha</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">pile</span><span class="p">[</span><span class="n">posa</span><span class="p">].</span><span class="n">size</span><span class="p">();</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+		<span class="n">pile</span><span class="p">[</span><span class="n">posb</span><span class="p">].</span><span class="n">push_back</span><span class="p">(</span><span class="n">pile</span><span class="p">[</span><span class="n">posa</span><span class="p">][</span><span class="n">i</span><span class="p">]);</span>
+	<span class="p">}</span>
+	<span class="n">pile</span><span class="p">[</span><span class="n">posa</span><span class="p">].</span><span class="n">resize</span><span class="p">(</span><span class="n">ha</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">find_pos</span><span class="p">(</span><span class="kt">int</span> <span class="n">obj1</span><span class="p">,</span><span class="kt">int</span> <span class="n">obj2</span><span class="p">){</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">j</span><span class="o">&lt;</span><span class="n">pile</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">size</span><span class="p">();</span><span class="n">j</span><span class="o">++</span><span class="p">){</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">pile</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">==</span><span class="n">obj1</span><span class="p">){</span>
+				<span class="n">posa</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+				<span class="n">ha</span> <span class="o">=</span> <span class="n">j</span><span class="p">;</span>
+			<span class="p">}</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">pile</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">==</span><span class="n">obj2</span><span class="p">){</span>
+				<span class="n">posb</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+				<span class="n">hb</span> <span class="o">=</span> <span class="n">j</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">print</span><span class="p">(){</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+		<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">i</span><span class="o">&lt;&lt;</span><span class="s">":"</span><span class="p">;</span>
+		<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">j</span><span class="o">&lt;</span><span class="n">pile</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">size</span><span class="p">();</span><span class="n">j</span><span class="o">++</span><span class="p">){</span>
+			<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">" "</span><span class="o">&lt;&lt;</span><span class="n">pile</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+		<span class="p">}</span>
+		<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+	<span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">n</span><span class="p">;</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+		<span class="n">pile</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">push_back</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+	<span class="p">}</span>
+	<span class="k">while</span><span class="p">(</span><span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">s1</span><span class="o">&amp;&amp;</span><span class="n">s1</span><span class="o">!=</span><span class="s">"quit"</span><span class="o">&amp;&amp;</span><span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">o1</span><span class="o">&gt;&gt;</span><span class="n">s2</span><span class="o">&gt;&gt;</span><span class="n">o2</span><span class="p">){</span>
+		<span class="n">find_pos</span><span class="p">(</span><span class="n">o1</span><span class="p">,</span><span class="n">o2</span><span class="p">);</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">posa</span><span class="o">==</span><span class="n">posb</span><span class="p">)</span>
+			<span class="k">continue</span><span class="p">;</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">s2</span><span class="o">==</span><span class="s">"onto"</span><span class="p">)</span>
+			<span class="n">clear_above</span><span class="p">(</span><span class="n">posb</span><span class="p">,</span><span class="n">hb</span><span class="p">);</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">s1</span><span class="o">==</span><span class="s">"move"</span><span class="p">)</span>
+			<span class="n">clear_above</span><span class="p">(</span><span class="n">posa</span><span class="p">,</span><span class="n">ha</span><span class="p">);</span>
+		<span class="n">pile_onto</span><span class="p">(</span><span class="n">posa</span><span class="p">,</span><span class="n">ha</span><span class="p">,</span><span class="n">posb</span><span class="p">);</span>
+<span class="c1">//		print();</span>
+	<span class="p">}</span>
+	<span class="n">print</span><span class="p">();</span>
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span> 
+</code></pre></div></div>
+
+:ET
