@@ -1,0 +1,8 @@
+I"�<h3 id="uva12096">UVA12096</h3>
+
+<p><a href="https://vjudge.net/problem/UVA-12096">题目链接https://vjudge.net/problem/UVA-12096</a></p>
+
+<p>或许题目也可以叫套娃(-&gt;_-&gt;)</p>
+
+<p>一道把STL运用到机制的题目，来自于紫书第五章。用到了<code class="highlighter-rouge">&lt;map&gt;</code><code class="highlighter-rouge">&lt;set&gt;</code><code class="highlighter-rouge">&lt;vector&gt;</code><code class="highlighter-rouge">&lt;algorithm&gt;</code></p>
+:ET
