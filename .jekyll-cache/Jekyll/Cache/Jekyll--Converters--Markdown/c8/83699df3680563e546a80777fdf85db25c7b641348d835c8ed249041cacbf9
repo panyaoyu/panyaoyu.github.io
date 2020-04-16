@@ -1,0 +1,77 @@
+I"o&<h3 id="uva1592">UVA1592</h3>
+
+<p><a href="https://vjudge.net/problem/UVA-1592">题目链接https://vjudge.net/problem/UVA-1592</a></p>
+
+<p>又是一道综合性的运用STL的题目，这次接触到了<code class="highlighter-rouge">make_pair</code>方法来构建一个pair。</p>
+
+<p>以后要注意多做一些stl的题目。</p>
+
+<p>本题要注意的地方主要是读取行数和列数时笔者直接用cin读取，会导致缓冲区内留下一个换行符，所以在开始读取数据时要加一个<code class="highlighter-rouge">getchar()</code>把换行符吃掉，然后用<code class="highlighter-rouge">getline(cin,s)</code>读取数据。</p>
+
+<p>以下是AC代码</p>
+
+<p><a href="https://udebug.com/UVa/1592">这里有一个超长的测试用例https://udebug.com/UVa/1592</a></p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include&lt;iostream&gt;
+</span>
+<span class="cp">#include&lt;map&gt;
+</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="k">typedef</span> <span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">PII</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">a</span><span class="p">[</span><span class="mi">10005</span><span class="p">][</span><span class="mi">15</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">cnt</span><span class="p">;</span>
+<span class="n">map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">id</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">ID</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">){</span>
+	<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">id</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+		<span class="n">id</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="o">++</span><span class="n">cnt</span><span class="p">;</span>
+	<span class="k">return</span> <span class="n">id</span><span class="p">[</span><span class="n">s</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">find</span><span class="p">(){</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">col</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span><span class="n">j</span><span class="o">&lt;</span><span class="n">col</span><span class="p">;</span><span class="n">j</span><span class="o">++</span><span class="p">){</span>
+			<span class="n">map</span><span class="o">&lt;</span><span class="n">PII</span><span class="p">,</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">d</span><span class="p">;</span>
+			<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">k</span><span class="o">&lt;</span><span class="n">row</span><span class="p">;</span><span class="n">k</span><span class="o">++</span><span class="p">){</span>			
+				<span class="n">PII</span> <span class="n">p</span> <span class="o">=</span> <span class="n">make_pair</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">j</span><span class="p">]);</span>
+				<span class="k">if</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="n">p</span><span class="p">)){</span>
+					<span class="n">printf</span><span class="p">(</span><span class="s">"NO</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+					<span class="n">printf</span><span class="p">(</span><span class="s">"%d %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">d</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+					<span class="n">printf</span><span class="p">(</span><span class="s">"%d %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+					<span class="k">return</span><span class="p">;</span>
+				<span class="p">}</span>
+			<span class="n">d</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">k</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="n">printf</span><span class="p">(</span><span class="s">"YES</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+	<span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+<span class="c1">//	freopen("data.in","r",stdin);</span>
+<span class="c1">//	freopen("data.out","w",stdout);</span>
+	<span class="n">string</span> <span class="n">s</span><span class="p">;</span>
+	<span class="kt">char</span> <span class="n">c</span><span class="p">;</span>
+	<span class="k">while</span><span class="p">(</span><span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">row</span><span class="o">&gt;&gt;</span><span class="n">col</span><span class="p">){</span>
+		<span class="n">getchar</span><span class="p">();</span>
+		<span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="n">id</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+		<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">row</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+			<span class="n">getline</span><span class="p">(</span><span class="n">cin</span><span class="p">,</span><span class="n">s</span><span class="p">);</span>
+			<span class="kt">int</span> <span class="n">lastpos</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+			<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">j</span><span class="o">&lt;</span><span class="n">col</span><span class="p">;</span><span class="n">j</span><span class="o">++</span><span class="p">){</span>
+				<span class="kt">int</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="sc">','</span><span class="p">,</span><span class="n">lastpos</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+				<span class="k">if</span><span class="p">(</span><span class="n">pos</span> <span class="o">==</span> <span class="n">string</span><span class="o">::</span><span class="n">npos</span><span class="p">)</span>
+					<span class="n">pos</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">();</span>
+				<span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">ID</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">lastpos</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">pos</span><span class="o">-</span><span class="n">lastpos</span><span class="o">-</span><span class="mi">1</span><span class="p">));</span>
+				<span class="n">lastpos</span> <span class="o">=</span> <span class="n">pos</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+		<span class="n">find</span><span class="p">();</span>		
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span> 
+</code></pre></div></div>
+
+:ET

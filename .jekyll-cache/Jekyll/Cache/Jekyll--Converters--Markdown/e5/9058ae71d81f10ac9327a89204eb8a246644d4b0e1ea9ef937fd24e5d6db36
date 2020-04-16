@@ -1,4 +1,4 @@
-I"�"<h3 id="uva12096">UVA12096</h3>
+I"�#<h3 id="uva1592">UVA1592</h3>
 
 <p><a href="https://vjudge.net/problem/UVA-12096">题目链接https://vjudge.net/problem/UVA-12096</a></p>
 
@@ -13,14 +13,22 @@
 <p>以下是AC代码</p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include&lt;iostream&gt;
-#include&lt;stack&gt;
-#include&lt;set&gt;
-#include&lt;map&gt;
-#include&lt;vector&gt;
-#include&lt;algorithm&gt;
-#define ALL(x) x.begin(),x.end()
-#define INS(x) inserter(x,x.begin())
-</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span>
+<span class="cp">#include&lt;stack&gt;
+</span>
+<span class="cp">#include&lt;set&gt;
+</span>
+<span class="cp">#include&lt;map&gt;
+</span>
+<span class="cp">#include&lt;vector&gt;
+</span>
+<span class="cp">#include&lt;algorithm&gt;
+</span>
+<span class="cp">#define ALL(x) x.begin(),x.end()
+</span>
+<span class="cp">#define INS(x) inserter(x,x.begin())
+</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
 <span class="k">typedef</span> <span class="n">set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">Set</span><span class="p">;</span>
 <span class="kt">int</span> <span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">;</span>
 <span class="n">stack</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">s</span><span class="p">;</span>
