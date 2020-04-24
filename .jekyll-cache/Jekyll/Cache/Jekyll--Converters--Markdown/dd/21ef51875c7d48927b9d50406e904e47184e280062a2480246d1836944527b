@@ -1,0 +1,72 @@
+I"�"<p><a href="https://vjudge.net/problem/UVA-442">UVA442</a></p>
+
+<p>这道题难度不大，但是有一个点以前没注意过，因此记录下来。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">Matrix</span><span class="p">{</span>
+	<span class="kt">int</span> <span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">;</span>
+	<span class="n">Matrix</span><span class="p">(</span><span class="kt">int</span> <span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="kt">int</span> <span class="n">col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">:</span><span class="n">row</span><span class="p">(</span><span class="n">row</span><span class="p">),</span><span class="n">col</span><span class="p">(</span><span class="n">col</span><span class="p">){}</span>
+<span class="p">}</span> <span class="p">;</span>
+<span class="n">Matrix</span> <span class="n">m</span><span class="p">[</span><span class="mi">26</span><span class="p">];</span>
+</code></pre></div></div>
+
+<p>在编写这一段代码时，一开始笔者在构造函数时没有给默认值，因此编译一直不过，百思不得其解。后来看到紫书上的解答，构造函数中给出了默认值，恍然大悟。因为在声明数组的时候会自动进行初始化，如果没有默认初始值的话，无法初始化数组肯定会报错。</p>
+
+<p>以下是AC代码</p>
+
+<p><a href="https://udebug.com/UVa/442">测试用例</a></p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include&lt;iostream&gt;
+</span>
+<span class="cp">#include&lt;stack&gt;
+</span>
+<span class="cp">#include&lt;cctype&gt;
+</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="n">N</span><span class="p">;</span>
+<span class="k">struct</span> <span class="n">Matrix</span><span class="p">{</span>
+	<span class="kt">int</span> <span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">;</span>
+	<span class="n">Matrix</span><span class="p">(</span><span class="kt">int</span> <span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="kt">int</span> <span class="n">col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">:</span><span class="n">row</span><span class="p">(</span><span class="n">row</span><span class="p">),</span><span class="n">col</span><span class="p">(</span><span class="n">col</span><span class="p">){}</span>
+<span class="p">}</span> <span class="p">;</span>
+<span class="n">Matrix</span> <span class="n">m</span><span class="p">[</span><span class="mi">26</span><span class="p">];</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+	<span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">N</span><span class="p">;</span>
+	<span class="kt">char</span> <span class="n">c</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">;</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">N</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+		<span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">c</span><span class="o">&gt;&gt;</span><span class="n">row</span><span class="o">&gt;&gt;</span><span class="n">col</span><span class="p">;</span>
+		<span class="n">m</span><span class="p">[</span><span class="n">c</span><span class="o">-</span><span class="sc">'A'</span><span class="p">].</span><span class="n">row</span> <span class="o">=</span> <span class="n">row</span><span class="p">;</span>
+		<span class="n">m</span><span class="p">[</span><span class="n">c</span><span class="o">-</span><span class="sc">'A'</span><span class="p">].</span><span class="n">col</span> <span class="o">=</span> <span class="n">col</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="n">string</span> <span class="n">s</span><span class="p">;</span>
+	<span class="k">while</span><span class="p">(</span><span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">s</span><span class="p">){</span>
+		<span class="n">stack</span><span class="o">&lt;</span><span class="n">Matrix</span><span class="o">&gt;</span> <span class="n">st</span><span class="p">;</span>
+		<span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">();</span>
+		<span class="kt">int</span> <span class="n">flag</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">isalpha</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+				<span class="n">st</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="sc">'A'</span><span class="p">]);</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="sc">')'</span><span class="p">){</span>
+				<span class="n">Matrix</span> <span class="n">a</span> <span class="o">=</span> <span class="n">st</span><span class="p">.</span><span class="n">top</span><span class="p">();</span>
+				<span class="n">st</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+				<span class="n">Matrix</span> <span class="n">b</span> <span class="o">=</span> <span class="n">st</span><span class="p">.</span><span class="n">top</span><span class="p">();</span>
+				<span class="n">st</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>				
+				<span class="k">if</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">row</span><span class="o">!=</span><span class="n">b</span><span class="p">.</span><span class="n">col</span><span class="p">){</span>
+					<span class="n">flag</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+					<span class="k">break</span><span class="p">;</span>
+				<span class="p">}</span>
+				<span class="n">st</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">Matrix</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">row</span><span class="p">,</span><span class="n">a</span><span class="p">.</span><span class="n">col</span><span class="p">));</span>
+				<span class="n">sum</span> <span class="o">+=</span> <span class="n">b</span><span class="p">.</span><span class="n">row</span><span class="o">*</span><span class="n">b</span><span class="p">.</span><span class="n">col</span><span class="o">*</span><span class="n">a</span><span class="p">.</span><span class="n">col</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">}</span> 
+		<span class="k">if</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span>
+			<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">"error"</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+		<span class="k">else</span>
+			<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">sum</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+	<span class="p">}</span>  
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+:ET
