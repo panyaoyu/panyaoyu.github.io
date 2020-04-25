@@ -1,0 +1,99 @@
+I"�4<p><a href="https://vjudge.net/problem/UVA-12657">UVA12657</a></p>
+
+<p>这题要是自己写的话非常难调。</p>
+
+<p>和单链表一样，本体用两个数组表示双向链表的连接顺序。值得学习。</p>
+
+<p>此外，本题适用了内联函数，</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">void</span> <span class="nf">link</span><span class="p">(</span><span class="kt">int</span> <span class="n">L</span><span class="p">,</span> <span class="kt">int</span> <span class="n">R</span><span class="p">)</span> <span class="p">{</span>
+  	<span class="n">right_</span><span class="p">[</span><span class="n">L</span><span class="p">]</span> <span class="o">=</span> <span class="n">R</span><span class="p">;</span> 
+  	<span class="n">left_</span><span class="p">[</span><span class="n">R</span><span class="p">]</span> <span class="o">=</span> <span class="n">L</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>内联函数可以减少调用函数产生的开销，因此以后遇到简单的函数可以写成内联的形式。遗憾的是内联函数中不能含有复杂的控制语句(while，switch等)，也不能有递归调用。</p>
+
+<p>我比较了一下使用内联函数70msAC，不使用180msAC，没有想到效率差了这么多。</p>
+
+<p>以下是AC代码</p>
+
+<p><a href="https://udebug.com/UVa/12657">测试用例https://udebug.com/UVa/12657</a></p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include&lt;algorithm&gt;
+</span>
+<span class="cp">#include&lt;iostream&gt;
+</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="n">left_</span><span class="p">[</span><span class="mi">100010</span><span class="p">],</span> <span class="n">right_</span><span class="p">[</span><span class="mi">100010</span><span class="p">];</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="nf">link</span><span class="p">(</span><span class="kt">int</span> <span class="n">L</span><span class="p">,</span> <span class="kt">int</span> <span class="n">R</span><span class="p">)</span> <span class="p">{</span>
+  	<span class="n">right_</span><span class="p">[</span><span class="n">L</span><span class="p">]</span> <span class="o">=</span> <span class="n">R</span><span class="p">;</span> 
+    <span class="n">left_</span><span class="p">[</span><span class="n">R</span><span class="p">]</span> <span class="o">=</span> <span class="n">L</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="c1">//	freopen("data.out","w",stdout);</span>
+  	<span class="kt">int</span> <span class="n">m</span><span class="p">,</span> <span class="n">kase</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  	<span class="k">while</span><span class="p">(</span><span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">n</span><span class="o">&gt;&gt;</span><span class="n">m</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      	<span class="n">left_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+      	<span class="n">right_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">right_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">left_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">n</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">op</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">inv</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">m</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+      	<span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">op</span><span class="p">;</span>
+      	<span class="k">if</span><span class="p">(</span><span class="n">op</span> <span class="o">==</span> <span class="mi">4</span><span class="p">)</span> <span class="n">inv</span> <span class="o">=</span> <span class="o">!</span><span class="n">inv</span><span class="p">;</span>
+      	<span class="k">else</span> <span class="p">{</span>
+	        <span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">X</span><span class="o">&gt;&gt;</span><span class="n">Y</span><span class="p">;</span>
+	        <span class="k">if</span><span class="p">(</span><span class="n">op</span> <span class="o">==</span> <span class="mi">3</span> <span class="o">&amp;&amp;</span> <span class="n">right_</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span> <span class="o">==</span> <span class="n">X</span><span class="p">)</span> 
+				<span class="n">swap</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">);</span>
+	        <span class="k">if</span><span class="p">(</span><span class="n">op</span> <span class="o">!=</span> <span class="mi">3</span> <span class="o">&amp;&amp;</span> <span class="n">inv</span><span class="p">)</span> 
+				<span class="n">op</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">-</span> <span class="n">op</span><span class="p">;</span>
+	        <span class="kt">int</span> <span class="n">LX</span> <span class="o">=</span> <span class="n">left_</span><span class="p">[</span><span class="n">X</span><span class="p">],</span> <span class="n">RX</span> <span class="o">=</span> <span class="n">right_</span><span class="p">[</span><span class="n">X</span><span class="p">],</span> <span class="n">LY</span> <span class="o">=</span> <span class="n">left_</span><span class="p">[</span><span class="n">Y</span><span class="p">],</span> <span class="n">RY</span> <span class="o">=</span> <span class="n">right_</span><span class="p">[</span><span class="n">Y</span><span class="p">];</span>
+	        <span class="k">if</span><span class="p">(</span><span class="n">op</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">if</span><span class="p">(</span><span class="n">X</span> <span class="o">==</span> <span class="n">left_</span><span class="p">[</span><span class="n">Y</span><span class="p">])</span>
+					<span class="k">continue</span><span class="p">;</span>	
+	          	<span class="n">link</span><span class="p">(</span><span class="n">LX</span><span class="p">,</span> <span class="n">RX</span><span class="p">);</span> 
+				<span class="n">link</span><span class="p">(</span><span class="n">LY</span><span class="p">,</span> <span class="n">X</span><span class="p">);</span> 
+				<span class="n">link</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">);</span>
+	        <span class="p">}</span>
+	        <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">op</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+	        	<span class="k">if</span><span class="p">(</span><span class="n">X</span> <span class="o">==</span> <span class="n">right_</span><span class="p">[</span><span class="n">Y</span><span class="p">])</span>
+					<span class="k">continue</span><span class="p">;</span>
+	          	<span class="n">link</span><span class="p">(</span><span class="n">LX</span><span class="p">,</span> <span class="n">RX</span><span class="p">);</span>
+				<span class="n">link</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">X</span><span class="p">);</span>
+				<span class="n">link</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">RY</span><span class="p">);</span>
+	        <span class="p">}</span>
+	        <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">op</span> <span class="o">==</span> <span class="mi">3</span><span class="p">){</span>
+			        <span class="k">if</span><span class="p">(</span><span class="n">right_</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">==</span> <span class="n">Y</span><span class="p">)</span> <span class="p">{</span> 
+					  	<span class="n">link</span><span class="p">(</span><span class="n">LX</span><span class="p">,</span> <span class="n">Y</span><span class="p">);</span> 
+						<span class="n">link</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">X</span><span class="p">);</span> 
+						<span class="n">link</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">RY</span><span class="p">);</span> 
+					<span class="p">}</span>
+		          	<span class="k">else</span> <span class="p">{</span> 
+					  	<span class="n">link</span><span class="p">(</span><span class="n">LX</span><span class="p">,</span> <span class="n">Y</span><span class="p">);</span> 
+						<span class="n">link</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">RX</span><span class="p">);</span> 
+						<span class="n">link</span><span class="p">(</span><span class="n">LY</span><span class="p">,</span> <span class="n">X</span><span class="p">);</span> 
+						<span class="n">link</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">RY</span><span class="p">);</span> 
+					<span class="p">}</span>
+	        <span class="p">}</span>
+      	<span class="p">}</span>
+    <span class="p">}</span>
+	    <span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	    <span class="kt">long</span> <span class="kt">long</span> <span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+	      	<span class="n">k</span> <span class="o">=</span> <span class="n">right_</span><span class="p">[</span><span class="n">k</span><span class="p">];</span>
+	      	<span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">&amp;</span><span class="mi">1</span><span class="p">)</span> <span class="n">ans</span> <span class="o">+=</span> <span class="n">k</span><span class="p">;</span>
+	    <span class="p">}</span>
+	    <span class="k">if</span><span class="p">(</span><span class="n">inv</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="p">(</span><span class="n">n</span><span class="o">&amp;</span><span class="mi">1</span><span class="p">))</span> 
+			<span class="n">ans</span> <span class="o">=</span> <span class="p">(</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span><span class="n">n</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="n">ans</span><span class="p">;</span>
+		<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">"Case "</span><span class="o">&lt;&lt;++</span><span class="n">kase</span><span class="o">&lt;&lt;</span><span class="s">": "</span><span class="o">&lt;&lt;</span><span class="n">ans</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+  	<span class="p">}</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+:ET

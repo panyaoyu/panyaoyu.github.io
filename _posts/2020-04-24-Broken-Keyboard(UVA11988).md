@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "每日算法20200423 破损的键盘(Broken Keyboard-UVA11988)"
+title: "每日算法20200424 破损的键盘(Broken Keyboard-UVA11988)"
 comments: true
 description: "记一道算法题"
 keywords: "UVA"
