@@ -62,3 +62,4 @@ exclude:
   - "script"
   - "vendor"
   - "thinkspace.gemspec"
+port: 4001
