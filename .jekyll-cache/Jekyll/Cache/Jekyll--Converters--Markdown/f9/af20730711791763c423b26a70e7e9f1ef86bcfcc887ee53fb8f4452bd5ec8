@@ -1,0 +1,116 @@
+I"�6<h3 id="试除法求质因子">试除法求质因子</h3>
+
+<p>一般分解质因子采用试除法，算法复杂度为$O(\sqrt{n})$。</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 试除法求质因子数目</span>
+<span class="kt">int</span> <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">a</span> <span class="o">/</span> <span class="n">i</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">a</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">a</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+            <span class="n">cnt</span><span class="o">++</span><span class="p">;</span>
+            <span class="n">a</span> <span class="o">/=</span> <span class="n">i</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">a</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="n">cnt</span><span class="o">++</span><span class="p">;</span>
+
+</code></pre></div></div>
+
+<p>因为大于等于$\sqrt{n}$的质因子至多只有一个，所以可以通过判断语句<code class="highlighter-rouge">i &lt;= a / i</code>限制循环的次数。写成<code class="highlighter-rouge">i &lt;= a / i</code>而不是<code class="highlighter-rouge">i * i &lt;= a</code>的原因主要是防止中间结果溢出<code class="highlighter-rouge">int</code>范围，保证结果正确。</p>
+
+<h3 id="一道时间卡的比较紧的题目">一道时间卡的比较紧的题目</h3>
+
+<p>直到遇到了下面这条题目。</p>
+
+<p><a href="https://codeforces.com/contest/1538/problem/D"> Another Problem About Dividing Numbers</a></p>
+
+<p>题意大致是计算两个数的质因子数目。</p>
+
+<p>一开始代码写成下面这样，判断语句使用<code class="highlighter-rouge">i &lt;= a / i</code>。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//Another Problem About Dividing Numbers</span>
+<span class="cp">#include&lt;iostream&gt;
+</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+	<span class="kt">int</span> <span class="n">T</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">k</span><span class="p">;</span>
+	<span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">T</span><span class="p">;</span>
+	<span class="k">while</span><span class="p">(</span><span class="n">T</span><span class="o">--</span><span class="p">){</span>
+		<span class="n">scanf</span><span class="p">(</span><span class="s">"%d%d%d"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">,</span><span class="o">&amp;</span><span class="n">k</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">((</span><span class="n">k</span><span class="o">==</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">a</span><span class="o">==</span><span class="n">b</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">k</span><span class="o">==</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">a</span><span class="o">%</span><span class="n">b</span> <span class="o">&amp;&amp;</span> <span class="n">b</span><span class="o">%</span><span class="n">a</span><span class="p">)){</span>
+			<span class="n">puts</span><span class="p">(</span><span class="s">"No"</span><span class="p">);</span>
+			<span class="k">continue</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="kt">int</span> <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">i</span>  <span class="o">&lt;=</span> <span class="n">a</span> <span class="o">/</span> <span class="n">i</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+			<span class="k">if</span> <span class="p">(</span><span class="n">a</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+				<span class="k">while</span> <span class="p">(</span><span class="n">a</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+					<span class="n">cnt</span><span class="o">++</span><span class="p">;</span>
+					<span class="n">a</span> <span class="o">/=</span> <span class="n">i</span><span class="p">;</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">a</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="n">cnt</span><span class="o">++</span><span class="p">;</span>
+		<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">b</span> <span class="o">/</span> <span class="n">i</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+			<span class="k">if</span> <span class="p">(</span><span class="n">b</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+				<span class="k">while</span> <span class="p">(</span><span class="n">b</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+					<span class="n">cnt</span><span class="o">++</span><span class="p">;</span>
+					<span class="n">b</span> <span class="o">/=</span> <span class="n">i</span><span class="p">;</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">b</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="n">cnt</span><span class="o">++</span><span class="p">;</span>	
+		<span class="k">if</span> <span class="p">(</span><span class="n">cnt</span> <span class="o">&gt;=</span> <span class="n">k</span><span class="p">)</span> <span class="n">puts</span><span class="p">(</span><span class="s">"Yes"</span><span class="p">);</span>
+		<span class="k">else</span> <span class="n">puts</span><span class="p">(</span><span class="s">"No"</span><span class="p">);</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>然后因为每个case里测试样例很多，最终结果TLE。</p>
+
+<p>计算机计算乘法比除法要快得多，因此<code class="highlighter-rouge">i  &lt;= a / i</code>在每次循环都需要判断，而且循环里的常数也比较小，所以这一步判断使用乘法和除法对整个循环的常数有比较大的影响，本题的数据值比较小，不存在溢出的问题，修改这个判断语句就可以成功AC。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//Another Problem About Dividing Numbers</span>
+<span class="cp">#include&lt;iostream&gt;
+</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+	<span class="kt">int</span> <span class="n">T</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">k</span><span class="p">;</span>
+	<span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">T</span><span class="p">;</span>
+	<span class="k">while</span><span class="p">(</span><span class="n">T</span><span class="o">--</span><span class="p">){</span>
+		<span class="n">scanf</span><span class="p">(</span><span class="s">"%d%d%d"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">,</span><span class="o">&amp;</span><span class="n">k</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">((</span><span class="n">k</span><span class="o">==</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">a</span><span class="o">==</span><span class="n">b</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">k</span><span class="o">==</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">a</span><span class="o">%</span><span class="n">b</span> <span class="o">&amp;&amp;</span> <span class="n">b</span><span class="o">%</span><span class="n">a</span><span class="p">)){</span>
+			<span class="n">puts</span><span class="p">(</span><span class="s">"No"</span><span class="p">);</span>
+			<span class="k">continue</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="kt">int</span> <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">i</span> <span class="o">*</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">a</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+			<span class="k">if</span> <span class="p">(</span><span class="n">a</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+				<span class="k">while</span> <span class="p">(</span><span class="n">a</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+					<span class="n">cnt</span><span class="o">++</span><span class="p">;</span>
+					<span class="n">a</span> <span class="o">/=</span> <span class="n">i</span><span class="p">;</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">a</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="n">cnt</span><span class="o">++</span><span class="p">;</span>
+		<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">i</span> <span class="o">*</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">b</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+			<span class="k">if</span> <span class="p">(</span><span class="n">b</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+				<span class="k">while</span> <span class="p">(</span><span class="n">b</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+					<span class="n">cnt</span><span class="o">++</span><span class="p">;</span>
+					<span class="n">b</span> <span class="o">/=</span> <span class="n">i</span><span class="p">;</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">b</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="n">cnt</span><span class="o">++</span><span class="p">;</span>	
+		<span class="k">if</span> <span class="p">(</span><span class="n">cnt</span> <span class="o">&gt;=</span> <span class="n">k</span><span class="p">)</span> <span class="n">puts</span><span class="p">(</span><span class="s">"Yes"</span><span class="p">);</span>
+		<span class="k">else</span> <span class="n">puts</span><span class="p">(</span><span class="s">"No"</span><span class="p">);</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="结论">结论</h3>
+
+<p>在用到试除法求质因子的时候，如果有<code class="highlighter-rouge">int</code>溢出的风险还是还是用<code class="highlighter-rouge">i  &lt;= a / i</code>进行判断，否则还是用<code class="highlighter-rouge">i * i &lt;= a</code>。</p>
+:ET
